@@ -1,0 +1,429 @@
+import random
+
+print("FormulaGP Grid Builder\n")
+
+# Historical Formula One data (seasons, teams, and drivers) with speed ratings and nationalities
+f1_database = {
+    "2009": {
+        "countries": ["Australia", "Malaysia", "China", "Bahrain", "Spain", "Monaco", "Turkey", "United Kingdom", "Germany", "Hungary", "Belgium", "Italy", "Singapore", "Japan", "Brazil", "United Arab Emirates"],
+        "teams": {
+            "McLaren": {"team_country": "United Kingdom", "drivers": ["Lewis Hamilton", "Heikki Kovalainen"], "driver_countries": {"Lewis Hamilton": "United Kingdom", "Heikki Kovalainen": "Finland"}, "speed": "fast"},
+            "Ferrari": {"team_country": "Italy", "drivers": ["Felipe Massa", "Kimi Raikkonen"], "driver_countries": {"Felipe Massa": "Brazil", "Kimi Raikkonen": "Finland"}, "speed": "fast"},
+            "BMW Sauber": {"team_country": "Germany", "drivers": ["Robert Kubica", "Nick Heidfeld"], "driver_countries": {"Robert Kubica": "Poland", "Nick Heidfeld": "Germany"}, "speed": "medium"},
+            "Renault": {"team_country": "France", "drivers": ["Fernando Alonso", "Nelson Piquet Jr."], "driver_countries": {"Fernando Alonso": "Spain", "Nelson Piquet Jr.": "Brazil"}, "speed": "medium"},
+            "Toyota": {"team_country": "Japan", "drivers": ["Jarno Trulli", "Timo Glock"], "driver_countries": {"Jarno Trulli": "Italy", "Timo Glock": "Germany"}, "speed": "fast"},
+            "Toro Rosso": {"team_country": "Italy", "drivers": ["Sebastien Bourdais", "Sebastien Buemi"], "driver_countries": {"Sebastien Bourdais": "France", "Sebastien Buemi": "Switzerland"}, "speed": "slow"},
+            "Red Bull": {"team_country": "Austria", "drivers": ["Mark Webber", "Sebastian Vettel"], "driver_countries": {"Mark Webber": "Australia", "Sebastian Vettel": "Germany"}, "speed": "very fast"},
+            "Williams": {"team_country": "United Kingdom", "drivers": ["Nico Rosberg", "Kazuki Nakajima"], "driver_countries": {"Nico Rosberg": "Germany", "Kazuki Nakajima": "Japan"}, "speed": "medium"},
+            "Force India": {"team_country": "India", "drivers": ["Adrian Sutil", "Giancarlo Fisichella"], "driver_countries": {"Adrian Sutil": "Germany", "Giancarlo Fisichella": "Italy"}, "speed": "slow"},
+            "Brawn": {"team_country": "United Kingdom", "drivers": ["Jenson Button", "Rubens Barrichello"], "driver_countries": {"Jenson Button": "United Kingdom", "Rubens Barrichello": "Brazil"}, "speed": "very fast"}
+        }
+    },
+    "2010": {
+        "countries": ["Bahrain", "Australia", "Malaysia", "China", "Spain", "Monaco", "Turkey", "Canada", "United Kingdom", "Germany", "Hungary", "Belgium", "Italy", "Singapore", "Japan", "South Korea", "Brazil", "United Arab Emirates"],
+        "teams": {
+            "McLaren": {"team_country": "United Kingdom", "drivers": ["Jenson Button", "Lewis Hamilton"], "driver_countries": {"Jenson Button": "United Kingdom", "Lewis Hamilton": "United Kingdom"}, "speed": "very fast"},
+            "Mercedes": {"team_country": "Germany", "drivers": ["Michael Schumacher", "Nico Rosberg"], "driver_countries": {"Michael Schumacher": "Germany", "Nico Rosberg": "Germany"}, "speed": "fast"},
+            "Red Bull": {"team_country": "Austria", "drivers": ["Sebastian Vettel", "Mark Webber"], "driver_countries": {"Sebastian Vettel": "Germany", "Mark Webber": "Australia"}, "speed": "very fast"},
+            "Ferrari": {"team_country": "Italy", "drivers": ["Felipe Massa", "Fernando Alonso"], "driver_countries": {"Felipe Massa": "Brazil", "Fernando Alonso": "Spain"}, "speed": "fast"},
+            "Williams": {"team_country": "United Kingdom", "drivers": ["Rubens Barrichello", "Nico Hulkenberg"], "driver_countries": {"Rubens Barrichello": "Brazil", "Nico Hulkenberg": "Germany"}, "speed": "medium"},
+            "Renault": {"team_country": "France", "drivers": ["Robert Kubica", "Vitaly Petrov"], "driver_countries": {"Robert Kubica": "Poland", "Vitaly Petrov": "Russia"}, "speed": "fast"},
+            "Force India": {"team_country": "India", "drivers": ["Adrian Sutil", "Vitantonio Liuzzi"], "driver_countries": {"Adrian Sutil": "Germany", "Vitantonio Liuzzi": "Italy"}, "speed": "medium"},
+            "Toro Rosso": {"team_country": "Italy", "drivers": ["Sebastien Buemi", "Jaime Alguersuari"], "driver_countries": {"Sebastien Buemi": "Switzerland", "Jaime Alguersuari": "Spain"}, "speed": "slow"},
+            "Lotus": {"team_country": "Malaysia", "drivers": ["Jarno Trulli", "Heikki Kovalainen"], "driver_countries": {"Jarno Trulli": "Italy", "Heiikki Kovalainen": "Finland"}, "speed": "slow"},
+            "HRT": {"team_country": "Spain", "drivers": ["Karun Chandhok", "Bruno Senna"], "driver_countries": {"Karun Chandhok": "India", "Bruno Senna": "Brazil"}, "speed": "slow"},
+            "BMW Sauber": {"team_country": "Switzerland", "drivers": ["Pedro de la Rosa", "Kamui Kobayashi"], "driver_countries": {"Pedro de la Rosa": "Spain", "Kamui Kobayashi": "Japan"}, "speed": "slow"},
+            "Virgin": {"team_country": "United Kingdom", "drivers": ["Timo Glock", "Lucas di Grassi"], "driver_countries": {"Timo Glock": "Germany", "Lucas di Grassi": "Brazil"}, "speed": "slow"}
+        }
+    },
+    "2011": {
+        "countries": ["Australia", "Malaysia", "China", "Turkey", "Spain", "Monaco", "Canada", "United Kingdom", "Germany", "Hungary", "Belgium", "Italy", "Singapore", "Japan", "South Korea", "India", "United Arab Emirates", "Brazil"],
+        "teams": {
+            "Red Bull": {"team_country": "Austria", "drivers": ["Sebastian Vettel", "Mark Webber"], "driver_countries": {"Sebastian Vettel": "Germany", "Mark Webber": "Australia"}, "speed": "very fast"},
+            "McLaren": {"team_country": "United Kingdom", "drivers": ["Lewis Hamilton", "Jenson Button"], "driver_countries": {"Lewis Hamilton": "United Kingdom", "Jenson Button": "United Kingdom"}, "speed": "very fast"},
+            "Ferrari": {"team_country": "Italy", "drivers": ["Fernando Alonso", "Felipe Massa"], "driver_countries": {"Fernando Alonso": "Spain", "Felipe Massa": "Brazil"}, "speed": "fast"},
+            "Mercedes": {"team_country": "Germany", "drivers": ["Michael Schumacher", "Nico Rosberg"], "driver_countries": {"Michael Schumacher": "Germany", "Nico Rosberg": "Germany"}, "speed": "fast"},
+            "Renault": {"team_country": "United Kingdom", "drivers": ["Nick Heidfeld", "Vitaly Petrov"], "driver_countries": {"Nick Heidfeld": "Germany", "Vitaly Petrov": "Russia"}, "speed": "medium"},
+            "Williams": {"team_country": "United Kingdom", "drivers": ["Rubens Barrichello", "Pastor Maldonado"], "driver_countries": {"Rubens Barrichello": "Brazil", "Pastor Maldonado": "Venezuela"}, "speed": "slow"},
+            "Force India": {"team_country": "India", "drivers": ["Adrian Sutil", "Paul di Resta"], "driver_countries": {"Adrian Sutil": "Germany", "Paul di Resta": "United Kingdom"}, "speed": "medium"},
+            "Sauber": {"team_country": "Switzerland", "drivers": ["Kamui Kobayashi", "Sergio Perez"], "driver_countries": {"Kamui Kobayashi": "Japan", "Sergio Perez": "Mexico"}, "speed": "slow"},
+            "Toro Rosso": {"team_country": "Italy", "drivers": ["Sebastien Buemi", "Jaime Alguersuari"], "driver_countries": {"Sebastien Buemi": "Switzerland", "Jaime Alguersuari": "Spain"}, "speed": "slow"},
+            "Lotus": {"team_country": "Malaysia", "drivers": ["Heikki Kovalainen", "Jarno Trulli"], "driver_countries": {"Heikki Kovalainen": "Finland", "Jarno Trulli": "Italy"}, "speed": "slow"},
+            "HRT": {"team_country": "Spain", "drivers": ["Daniel Ricciardo", "Vitantonio Liuzzi"], "driver_countries": {"Daniel Ricciardo": "Australia", "Vitantonio Liuzzi": "Italy"}, "speed": "slow"},
+            "Virgin": {"team_country": "United Kingdom", "drivers": ["Timo Glock", "Jerome d'Ambrosio"], "driver_countries": {"Timo Glock": "Germany", "Jerome d'Ambrosio": "Belgium"}, "speed": "slow"}
+        }
+    },
+    "2012": {
+        "countries": ["Australia", "Malaysia", "China", "Bahrain", "Spain", "Monaco", "Canada", "United Kingdom", "Germany", "Hungary", "Belgium", "Italy", "Singapore", "Japan", "South Korea", "India", "United Arab Emirates", "United States", "Brazil"],
+        "teams": {
+            "Red Bull": {"team_country": "Austria", "drivers": ["Sebastian Vettel", "Mark Webber"], "driver_countries": {"Sebastian Vettel": "Germany", "Mark Webber": "Australia"}, "speed": "very fast"},
+            "McLaren": {"team_country": "United Kingdom", "drivers": ["Jenson Button", "Lewis Hamilton"], "driver_countries": {"Jenson Button": "United Kingdom", "Lewis Hamilton": "United Kingdom", "speed": "fast"}},
+            "Ferrari": {"team_country": "Italy", "drivers": ["Fernando Alonso", "Felipe Massa"], "driver_countries": {"Fernando Alonso": "Spain", "Felipe Massa": "Brazil"}, "speed": "very fast"},
+            "Mercedes": {"team_country": "Germany", "drivers": ["Michael Schumacher", "Nico Rosberg"], "driver_countries": {"Michael Schumacher": "Germany", "Nico Rosberg": "Germany"}, "speed": "medium"},
+            "Lotus": {"team_country": "United Kingdom", "drivers": ["Kimi Raikkonen", "Romain Grosjean"], "driver_countries": {"Kimi Raikkonen": "Finland", "Romain Grosjean": "France"}, "speed": "fast"},
+            "Force India": {"team_country": "India", "drivers": ["Paul di Resta", "Nico Hulkenberg"], "driver_countries": {"Paul di Resta": "United Kingdom", "Nico Hulkenberg": "Germany"}, "speed": "medium"},
+            "Sauber": {"team_country": "Switzerland", "drivers": ["Kamui Kobayashi", "Sergio Perez"], "driver_countries": {"Kamui Kobayashi": "Japan", "Sergio Perez": "Mexico"}, "speed": "medium"},
+            "Toro Rosso": {"team_country": "Italy", "drivers": ["Daniel Ricciardo", "Jean-Eric Vergne"], "driver_countries": {"Daniel Ricciardo": "Australia", "Jean-Eric Vergne": "France"}, "speed": "slow"},
+            "Williams": {"team_country": "United Kingdom", "drivers": ["Pastor Maldonado", "Bruno Senna"], "driver_countries": {"Pastor Maldonado": "Venezuela", "Bruno Senna": "Brazil"}, "speed": "medium"},
+            "Caterham": {"team_country": "Malaysia", "drivers": ["Heikki Kovalainen", "Vitaly Petrov"], "driver_countries": {"Heikki Kovalainen": "Finland", "Vitaly Petrov": "Russia"}, "speed": "slow"},
+            "HRT": {"team_country": "Spain", "drivers": ["Pedro de la Rosa", "Narain Karthikeyan"], "driver_countries": {"Pedro de la Rosa": "Spain", "Narain Karthikeyan": "India"}, "speed": "slow"},
+            "Marussia": {"team_country": "Russia", "drivers": ["Timo Glock", "Charles Pic"], "driver_countries": {"Timo Glock": "Germany", "Charles Pic": "France"}, "speed": "slow"}
+        }
+    },
+    "2013": {
+        "countries": ["Australia", "Malaysia", "China", "Bahrain", "Spain", "Monaco", "Canada", "United Kingdom", "Germany", "Hungary", "Belgium", "Italy", "Singapore", "South Korea", "Japan", "India", "United Arab Emirates", "United States", "Brazil"],
+        "teams": {
+            "Red Bull": {"team_country": "Austria", "drivers": ["Sebastian Vettel", "Mark Webber"], "driver_countries": {"Sebastian Vettel": "Germany", "Mark Webber": "Australia"}, "speed": "very fast"},
+            "Ferrari": {"team_country": "Italy", "drivers": ["Fernando Alonso", "Felipe Massa"], "driver_countries": {"Fernando Alonso": "Spain", "Felipe Massa": "Brazil"}, "speed": "fast"},
+            "McLaren": {"team_country": "United Kingdom", "drivers": ["Jenson Button", "Sergio Perez"], "driver_countries": {"Jenson Button": "United Kingdom", "Sergio Perez": "Mexico"}, "speed": "medium"},
+            "Lotus": {"team_country": "United Kingdom", "drivers": ["Kimi Raikkonen", "Romain Grosjean"], "driver_countries": {"Kimi Raikkonen": "Finland", "Romain Grosjean": "France"}, "speed": "fast"},
+            "Mercedes": {"team_country": "Germany", "drivers": ["Nico Rosberg", "Lewis Hamilton"], "driver_countries": {"Nico Rosberg": "Germany", "Lewis Hamilton": "United Kingdom"}, "speed": "fast"},
+            "Sauber": {"team_country": "Switzerland", "drivers": ["Nico Hulkenberg", "Esteban Gutierrez"], "driver_countries": {"Nico Hulkenberg": "Germany", "Esteban Gutierrez": "Mexico"}, "speed": "medium"},
+            "Force India": {"team_country": "India", "drivers": ["Paul di Resta", "Adrian Sutil"], "driver_countries": {"Paul di Resta": "United Kingdom", "Adrian Sutil": "Germany"}, "speed": "medium"},
+            "Williams": {"team_country": "United Kingdom", "drivers": ["Pastor Maldonado", "Valtteri Bottas"], "driver_countries": {"Pastor Maldonado": "Venezuela", "Valtteri Bottas": "Finland"}, "speed": "slow"},
+            "Toro Rosso": {"team_country": "Italy", "drivers": ["Jean-Eric Vergne", "Daniel Ricciardo"], "driver_countries": {"Jean-Eric Vergne": "France", "Daniel Ricciardo": "Australia"}, "speed": "slow"},
+            "Caterham": {"team_country": "Malaysia", "drivers": ["Charles Pic", "Giedo van der Garde"], "driver_countries": {"Charles Pic": "France", "Giedo van der Garde": "Netherlands"}, "speed": "slow"},
+            "Marussia": {"team_country": "Russia", "drivers": ["Jules Bianchi", "Max Chilton"], "driver_countries": {"Jules Bianchi": "France", "Max Chilton": "United Kingdom"}, "speed": "slow"}
+        }
+    },
+    "2014": {
+        "countries": ["Australia", "Malaysia", "Bahrain", "China", "Spain", "Monaco", "Canada", "Austria", "United Kingdom", "Germany", "Hungary", "Belgium", "Italy", "Singapore", "Japan", "Russia", "United States", "Brazil", "United Arab Emirates"],
+        "teams": {
+            "Caterham": {"team_country": "Malaysia", "drivers": ["Marcus Ericsson", "Kamui Kobayashi"], "driver_countries": {"Marcus Ericsson": "Sweden", "Kamui Kobayashi": "Japan"}, "speed": "slow"},
+            "Ferrari": {"team_country": "Italy", "drivers": ["Kimi Raikkonen", "Fernando Alonso"], "driver_countries": {"Kimi Raikkonen": "Finland", "Fernando Alonso": "Spain"}, "speed": "fast"},
+            "Force India": {"team_country": "India", "drivers": ["Sergio Perez", "Nico Hulkenberg"], "driver_countries": {"Sergio Perez": "Mexico", "Nico Hulkenberg": "Germany"}, "speed": "fast"},
+            "Lotus": {"team_country": "United Kingdom", "drivers": ["Romain Grosjean", "Pastor Maldonado"], "driver_countries": {"Romain Grosjean": "France", "Pastor Maldonado": "Venezuela"}, "speed": "slow"},
+            "Marussia": {"team_country": "Russia", "drivers": ["Max Chilton", "Jules Bianchi"], "driver_countries": {"Max Chilton": "United Kingdom", "Jules Bianchi": "France"}, "speed": "slow"},
+            "McLaren": {"team_country": "United Kingdom", "drivers": ["Kevin Magnussen", "Jenson Button"], "driver_countries": {"Kevin Magnussen": "Denmark", "Jenson Button": "United Kingdom"}, "speed": "fast"},
+            "Mercedes": {"team_country": "Germany", "drivers": ["Nico Rosberg", "Lewis Hamilton"], "driver_countries": {"Nico Rosberg": "Germany", "Lewis Hamilton": "United Kingdom"}, "speed": "very fast"},
+            "Red Bull": {"team_country": "Austria", "drivers": ["Sebastian Vettel", "Daniel Ricciardo"], "driver_countries": {"Sebastian Vettel": "Germany", "Daniel Ricciardo": "Australia"}, "speed": "very fast"},
+            "Sauber": {"team_country": "Switzerland", "drivers": ["Esteban Gutierrez", "Adrian Sutil"], "driver_countries": {"Esteban Gutierrez": "Mexico", "Adrian Sutil": "Germany"}, "speed": "slow"},
+            "Toro Rosso": {"team_country": "Italy", "drivers": ["Jean-Eric Vergne", "Daniil Kvyat"], "driver_countries": {"Jean-Eric Vergne": "France", "Daniil Kvyat": "Russia"}, "speed": "slow"},
+            "Williams": {"team_country": "United Kingdom", "drivers": ["Felipe Massa", "Valtteri Bottas"], "driver_countries": {"Felipe Massa": "Brazil", "Valtteri Bottas": "Finland"}, "speed": "fast"}
+        }
+    },
+    "2015": {
+        "countries": ["Australia", "Malaysia", "China", "Bahrain", "Spain", "Monaco", "Canada", "Austria", "United Kingdom", "Hungary", "Belgium", "Italy", "Singapore", "Japan", "Russia", "United States", "Mexico", "Brazil", "United Arab Emirates"],
+        "teams": {
+            "Ferrari": {"team_country": "Italy", "drivers": ["Sebastian Vettel", "Kimi Raikkonen"], "driver_countries": {"Sebastian Vettel": "Germany", "Kimi Raikkonen": "Finland"}, "speed": "very fast"},
+            "Force India": {"team_country": "India", "drivers": ["Sergio Perez", "Nico Hulkenberg"], "driver_countries": {"Sergio Perez": "Mexico", "Nico Hulkenberg": "Germany"}, "speed": "medium"},
+            "Lotus": {"team_country": "United Kingdom", "drivers": ["Romain Grosjean", "Pastor Maldonado"], "driver_countries": {"Romain Grosjean": "France", "Pastor Maldonado": "Venezuela"}, "speed": "medium"},
+            "Marussia": {"team_country": "United Kingdom", "drivers": ["Will Stevens", "Roberto Merhi"], "driver_countries": {"Will Stevens": "United Kingdom", "Roberto Merhi": "Spain"}, "speed": "slow"},
+            "McLaren": {"team_country": "United Kingdom", "drivers": ["Fernando Alonso", "Jenson Button"], "driver_countries": {"Fernando Alonso": "Spain", "Jenson Button": "United Kingdom"}, "speed": "slow"},
+            "Mercedes": {"team_country": "Germany", "drivers": ["Nico Rosberg", "Lewis Hamilton"], "driver_countries": {"Nico Rosberg": "Germany", "Lewis Hamilton": "United Kingdom"}, "speed": "very fast"},
+            "Red Bull": {"team_country": "Austria", "drivers": ["Daniel Ricciardo", "Daniil Kvyat"], "driver_countries": {"Daniel Ricciardo": "Australia", "Daniil Kvyat": "Russia"}, "speed": "fast"},
+            "Sauber": {"team_country": "Switzerland", "drivers": ["Marcus Ericsson", "Felipe Nasr"], "driver_countries": {"Marcus Ericsson": "Sweden", "Felipe Nasr": "Brazil"}, "speed": "slow"},
+            "Toro Rosso": {"team_country": "Italy", "drivers": ["Max Verstappen", "Carlos Sainz Jr."], "driver_countries": {"Max Verstappen": "Netherlands", "Carlos Sainz Jr.": "Spain"}, "speed": "medium"},
+            "Williams": {"team_country": "United Kingdom", "drivers": ["Felipe Massa", "Valtteri Bottas"], "driver_countries": {"Felipe Massa": "Brazil", "Valtteri Bottas": "Finland"}, "speed": "fast"}
+        }
+    },
+    "2016": {
+        "countries": ["Australia", "Bahrain", "China", "Russia", "Spain", "Monaco", "Canada", "Azerbaijan", "Austria", "United Kingdom", "Hungary", "Germany", "Belgium", "Italy", "Singapore", "Malaysia", "Japan", "United States", "Mexico", "Brazil", "United Arab Emirates"],
+        "teams": {
+            "Ferrari": {"team_country": "Italy", "drivers": ["Sebastian Vettel", "Kimi Raikkonen"], "driver_countries": {"Sebastian Vettel": "Germany", "Kimi Raikkonen": "Finland"}, "speed": "very fast"},
+            "Force India": {"team_country": "India", "drivers": ["Sergio Perez", "Nico Hulkenberg"], "driver_countries": {"Sergio Perez": "Mexico", "Nico Hulkenberg": "Germany"}, "speed": "fast"},
+            "Haas": {"team_country": "United States", "drivers": ["Romain Grosjean", "Esteban Gutierrez"], "driver_countries": {"Romain Grosjean": "France", "Esteban Gutierrez": "Mexico"}, "speed": "slow"},
+            "Manor": {"team_country": "United Kingdom", "drivers": ["Rio Haryanto", "Pascal Wehrlein"], "driver_countries": {"Rio Haryanto": "Indonesia", "Pascal Wehrlein": "Germany"}, "speed": "slow"},
+            "McLaren": {"team_country": "United Kingdom", "drivers": ["Fernando Alonso",  "Jenson Button"], "driver_countries": {"Fernando Alonso": "Spain", "Jenson Button": "United Kingdom"}, "speed": "medium"},
+            "Mercedes": {"team_country": "Germany", "drivers": ["Nico Rosberg", "Lewis Hamilton"], "driver_countries": {"Nico Rosberg": "Germany", "Lewis Hamilton": "United Kingdom"}, "speed": "very fast"},
+            "Red Bull": {"team_country": "Austria", "drivers": ["Daniel Ricciardo", "Max Verstappen"], "driver_countries": {"Daniel Ricciardo": "Australia", "Max Verstappen": "Netherlands"}, "speed": "very fast"},
+            "Renault": {"team_country": "France", "drivers": ["Kevin Magnussen", "Jolyon Palmer"], "driver_countries": {"Kevin Magnussen": "Denmark", "Jolyon Palmer": "United Kingdom"}, "speed": "slow"},
+            "Sauber": {"team_country": "Switzerland", "drivers": ["Marcus Ericsson", "Felipe Nasr"], "driver_countries": {"Marcus Ericsson": "Sweden", "Felipe Nasr": "Brazil"}, "speed": "slow"},
+            "Toro Rosso": {"team_country": "Italy", "drivers": ["Daniil Kvyat", "Carlos Sainz Jr."], "driver_countries": {"Daniil Kvyat": "Russia", "Carlos Sainz Jr.": "Spain"}, "speed": "medium"},
+            "Williams": {"team_country": "United Kingdom", "drivers": ["Felipe Massa", "Valtteri Bottas"], "driver_countries": {"Felipe Massa": "Brazil", "Valtteri Bottas": "Finland"}, "speed": "medium"}
+        }
+    },
+    "2017": {
+        "countries": ["Australia", "China", "Bahrain", "Russia", "Spain", "Monaco", "Canada", "Azerbaijan", "Austria", "United Kingdom", "Hungary", "Belgium", "Italy", "Singapore", "Malaysia", "Japan", "United States", "Mexico", "Brazil", "United Arab Emirates"],
+        "teams": {
+            "Ferrari": {"team_country": "Italy", "drivers": ["Sebastian Vettel", "Kimi Raikkonen"], "driver_countries": {"Sebastian Vettel": "Germany", "Kimi Raikkonen": "Finland"}, "speed": "very fast"},
+            "Force India": {"team_country": "India", "drivers": ["Sergio Perez", "Esteban Ocon"], "driver_countries": {"Sergio Perez": "Mexico", "Esteban Ocon": "France"}, "speed": "fast"},
+            "Haas": {"team_country": "United States", "drivers": ["Romain Grosjean", "Kevin Magnussen"], "driver_countries": {"Romain Grosjean": "France", "Kevin Magnussen": "Denmark"}, "speed": "slow"},
+            "McLaren": {"team_country": "United Kingdom", "drivers": ["Stoffel Vandoorne", "Fernando Alonso"], "driver_countries": {"Stoffel Vandoorne": "Belgium", "Fernando Alonso": "Spain"}, "speed": "slow"},
+            "Mercedes": {"team_country": "Germany", "drivers": ["Lewis Hamilton", "Valtteri Bottas"], "driver_countries": {"Lewis Hamilton": "United Kingdom", "Valtteri Bottas": "Finland"}, "speed": "very fast"},
+            "Red Bull": {"team_country": "Austria", "drivers": ["Daniel Ricciardo", "Max Verstappen"], "driver_countries": {"Daniel Ricciardo": "Australia", "Max Verstappen": "Netherlands"}, "speed": "fast"},
+            "Renault": {"team_country": "France", "drivers": ["Nico Hulkenberg", "Carlos Sainz Jr."], "driver_countries": {"Nico Hulkenberg": "Germany", "Carlos Sainz Jr.": "Spain"}, "speed": "medium"},
+            "Sauber": {"team_country": "Switzerland", "drivers": ["Marcus Ericsson", "Pascal Wehrlein"], "driver_countries": {"Marcus Ericsson": "Sweden", "Pascal Wehrlein": "Germany"}, "speed": "slow"},
+            "Toro Rosso": {"team_country": "Italy", "drivers": ["Pierre Gasly", "Brendon Hartley"], "driver_countries": {"Pierre Gasly": "France", "Brendon Hartley": "New Zealand"}, "speed": "slow"},
+            "Williams": {"team_country": "United Kingdom", "drivers": ["Felipe Massa", "Lance Stroll"], "driver_countries": {"Felipe Massa": "Brazil", "Lance Stroll": "Canada"}, "speed": "medium"}
+        }
+    },
+    "2018": {
+        "countries": ["Australia", "Bahrain", "China", "Azerbaijan", "Spain", "Monaco", "Canada", "France", "Austria", "United Kingdom", "Germany", "Hungary", "Belgium", "Italy", "Singapore", "Russia", "Japan", "United States", "Mexico", "Brazil", "United Arab Emirates"],
+        "teams": {
+            "Ferrari": {"team_country": "Italy", "drivers": ["Sebastian Vettel", "Kimi Raikkonen"], "driver_countries": {"Sebastian Vettel": "Germany", "Kimi Raikkonen": "Finland"}, "speed": "very fast"},
+            "Force India": {"team_country": "United Kingdom", "drivers": ["Sergio Perez", "Esteban Ocon"], "driver_countries": {"Sergio Perez": "Mexico", "Esteban Ocon": "France"}, "speed": "medium"},
+            "Haas": {"team_country": "United States", "drivers": ["Romain Grosjean", "Kevin Magnussen"], "driver_countries": {"Romain Grosjean": "France", "Kevin Magnussen": "Denmark"}, "speed": "medium"},
+            "McLaren": {"team_country": "United Kingdom", "drivers": ["Stoffel Vandoorne", "Fernando Alonso"], "driver_countries": {"Stoffel Vandoorne": "Belgium", "Fernando  Alonso": "Spain"}, "speed": "medium"},
+            "Mercedes": {"team_country": "Germany", "drivers": ["Lewis Hamilton", "Valtteri Bottas"], "driver_countries": {"Lewis Hamilton": "United Kingdom", "Valtteri Bottas": "Finland"}, "speed": "very fast"},
+            "Red Bull": {"team_country": "Austria", "drivers": ["Daniel Ricciardo", "Max Verstappen"], "driver_countries": {"Daniel Ricciardo": "Australia", "Max Verstappen": "Netherlands"}, "speed": "very fast"},
+            "Renault": {"team_country": "France", "drivers": ["Nico Hulkenberg", "Carlos Sainz Jr."], "driver_countries": {"Nico Hulkenberg": "Germany", "Carlos Sainz Jr.": "Spain"}, "speed": "medium"},
+            "Sauber": {"team_country": "Switzerland", "drivers": ["Marcus Ericsson", "Charles Leclerc"], "driver_countries": {"Marcus Ericsson": "Sweden", "Charles Leclerc": "Monaco"}, "speed": "slow"},
+            "Toro Rosso": {"team_country": "Italy", "drivers": ["Pierre Gasly", "Brendon Hartley"], "driver_countries": {"Pierre Gasly": "France", "Brendon Hartley": "New Zealand"}, "speed": "slow"},
+            "Williams": {"team_country": "United Kingdom", "drivers": ["Lance Stroll", "Sergey Sirotkin"], "driver_countries": {"Lance Stroll": "Canada", "Sergey Sirotkin": "Russia"}, "speed": "slow"}
+        }
+    },
+    "2019": {
+        "countries": ["Australia", "Bahrain", "China", "Azerbaijan", "Spain", "Monaco", "Canada", "France", "Austria", "United Kingdom", "Germany", "Hungary", "Belgium", "Italy", "Singapore", "Russia", "Japan", "Mexico", "United States", "Brazil", "United Arab Emirates"],
+        "teams": {
+            "Alfa Romeo": {"team_country": "Switzerland", "drivers": ["Kimi Raikkonen", "Antonio Giovinazzi"], "driver_countries": {"Kimi Raikkonen": "Finland", "Antonio Giovinazzi": "Italy"}, "speed": "medium"},
+            "Ferrari": {"team_country": "Italy", "drivers": ["Sebastian Vettel", "Charles Leclerc"], "driver_countries": {"Sebastian Vettel": "Germany", "Charles Leclerc": "Monaco"}, "speed": "very fast"},
+            "Haas": {"team_country": "United States", "drivers": ["Romain Grosjean", "Kevin Magnussen"], "driver_countries": {"Romain Grosjean": "France", "Kevin Magnussen": "Denmark"}, "speed": "slow"},
+            "McLaren": {"team_country": "United Kingdom", "drivers": ["Lando Norris", "Carlos Sainz Jr."], "driver_countries": {"Lando Norris": "United Kingdom", "Carlos Sainz Jr.": "Spain"}, "speed": "fast"},
+            "Mercedes": {"team_country": "Germany", "drivers": ["Lewis Hamilton", "Valtteri Bottas"], "driver_countries": {"Lewis Hamilton": "United Kingdom", "Valtteri Bottas": "Finland"}, "speed": "very fast"},
+            "Racing Point": {"team_country": "United Kingdom", "drivers": ["Sergio Perez", "Lance Stroll"], "driver_countries": {"Sergio Perez": "Mexico", "Lance Stroll": "Canada"}, "speed": "medium"},
+            "Red Bull": {"team_country": "Austria", "drivers": ["Pierre Gasly", "Max Verstappen"], "driver_countries": {"Pierre Gasly": "France", "Max Verstappen": "Netherlands"}, "speed": "very fast"},
+            "Renault": {"team_country": "France", "drivers": ["Daniel Ricciardo", "Nico Hulkenberg"], "driver_countries": {"Daniel Ricciardo": "Australia", "Nico Hulkenberg": "Germany"}, "speed": "medium"},
+            "Toro Rosso": {"team_country": "Italy", "drivers": ["Alexander Albon", "Daniil Kvyat"], "driver_countries": {"Alexander Albon": "Thailand", "Daniil Kvyat": "Russia"}, "speed": "medium"},
+            "Williams": {"team_country": "United Kingdom", "drivers": ["George Russell", "Robert Kubica"], "driver_countries": {"George Russell": "United Kingdom", "Robert Kubica": "Poland"}, "speed": "slow"}
+        }
+    },
+    "2020": {
+        "countries": ["Austria", "Hungary", "United Kingdom", "Spain", "Belgium", "Italy", "Russia", "Germany", "Portugal", "Turkey", "Bahrain", "United Arab Emirates"],
+        "teams": {
+            "Alfa Romeo": {"team_country": "Switzerland", "drivers": ["Kimi Raikkonen", "Antonio Giovinazzi"], "driver_countries": {"Kimi Raikkonen": "Finland", "Antonio Giovinazzi": "Italy"}, "speed": "slow"},
+            "AlphaTauri": {"team_country": "Italy", "drivers": ["Pierre Gasly", "Daniil Kvyat"], "driver_countries": {"Pierre Gasly": "France", "Daniil Kvyat": "Russia"}, "speed": "medium"},
+            "Ferrari": {"team_country": "Italy", "drivers": ["Sebastian Vettel", "Charles Leclerc"], "driver_countries": {"Sebastian Vettel": "Germany", "Charles Leclerc": "Monaco"}, "speed": "medium"},
+            "Haas": {"team_country": "United States", "drivers": ["Romain Grosjean", "Kevin Magnussen"], "driver_countries": {"Romain Grosjean": "France", "Kevin Magnussen": "Denmark"}, "speed": "slow"},
+            "McLaren": {"team_country": "United Kingdom", "drivers": ["Lando Norris", "Carlos Sainz Jr."], "driver_countries": {"Lando Norris": "United Kingdom", "Carlos Sainz Jr.": "Spain"}, "speed": "fast"},
+            "Mercedes": {"team_country": "Germany", "drivers": ["Lewis Hamilton", "Valtteri Bottas"], "driver_countries": {"Lewis Hamilton": "United Kingdom", "Valtteri Bottas": "Finland"}, "speed": "very fast"},
+            "Racing Point": {"team_country": "United Kingdom", "drivers": ["Sergio Perez", "Lance Stroll"], "driver_countries": {"Sergio Perez": "Mexico", "Lance Stroll": "Canada"}, "speed": "fast"},
+            "Red Bull": {"team_country": "Austria", "drivers": ["Alexander Albon", "Max Verstappen"], "driver_countries": {"Alexander Albon": "Thailand", "Max Verstappen": "Netherlands"}, "speed": "fast"},
+            "Renault": {"team_country": "France", "drivers": ["Daniel Ricciardo", "Esteban Ocon"], "driver_countries": {"Daniel Ricciardo": "Australia", "Esteban Ocon": "France"}, "speed": "fast"},
+            "Williams": {"team_country": "United Kingdom", "drivers": ["Nicholas Latifi", "George Russell"], "driver_countries": {"Nicholas Latifi": "Canada", "George Russell": "United Kingdom"}, "speed": "slow"}
+        }
+    },
+    "2021": {
+        "countries": ["Bahrain", "Portugal", "Spain", "Monaco", "Azerbaijan", "France", "Austria", "United Kingdom", "Hungary", "Belgium", "Netherlands", "Italy", "Russia", "Turkey", "United States", "Mexico", "Brazil", "Qatar", "Saudi Arabia", "United Arab Emirates"],
+        "teams": {
+            "Alfa Romeo": {"team_country": "Switzerland", "drivers": ["Kimi Raikkonen", "Antonio Giovinazzi"], "driver_countries": {"Kimi Raikkonen": "Finland", "Antonio Giovinazzi": "Italy"}, "speed": "slow"},
+            "AlphaTauri": {"team_country": "Italy", "drivers": ["Pierre Gasly", "Yuki Tsunoda"], "driver_countries": {"Pierre Gasly": "France", "Yuki Tsunoda": "Japan"}, "speed": "medium"},
+            "Alpine": {"team_country": "France", "drivers": ["Fernando Alonso", "Esteban Ocon"], "driver_countries": {"Fernando Alonso": "Spain", "Esteban Ocon": "France"}, "speed": "fast"},
+            "Aston Martin": {"team_country": "United Kingdom", "drivers": ["Sebastian Vettel", "Lance Stroll"], "driver_countries": {"Sebastian Vettel": "Germany", "Lance Stroll": "Canada"}, "speed": "medium"},
+            "Ferrari": {"team_country": "Italy", "drivers": ["Charles Leclerc", "Carlos Sainz Jr."], "driver_countries": {"Charles Leclerc": "Monaco", "Carlos Sainz Jr.": "Spain"}, "speed": "fast"},
+            "Haas": {"team_country": "United States", "drivers": ["Nikita Mazepin", "Mick Schumacher"], "driver_countries": {"Nikita Mazepin": "Russia", "Mick Schumacher": "Germany"}, "speed": "slow"},
+            "McLaren": {"team_country": "United Kingdom", "drivers": ["Daniel Ricciardo", "Lando Norris"], "driver_countries": {"Daniel Ricciardo": "Australia", "Lando Norris": "United Kingdom"}, "speed": "fast"},
+            "Mercedes": {"team_country": "Germany", "drivers": ["Lewis Hamilton", "Valtteri Bottas"], "driver_countries": {"Lewis Hamilton": "United Kingdom", "Valtteri Bottas": "Finland"}, "speed": "very fast"},
+            "Red Bull": {"team_country": "Austria", "drivers": ["Sergio Perez", "Max Verstappen"], "driver_countries": {"Sergio Perez": "Mexico", "Max Verstappen": "Netherlands"}, "speed": "very fast"},
+            "Williams": {"team_country": "United Kingdom", "drivers": ["Nicholas Latifi", "George Russell"], "driver_countries": {"Nicholas Latifi": "Canada", "George Russell": "United Kingdom"}, "speed": "slow"}
+        }
+    },
+    "2022": {
+        "countries": ["Bahrain", "Saudi Arabia", "Australia", "Spain", "Monaco", "Azerbaijan", "Canada", "United Kingdom", "Austria", "France", "Hungary", "Belgium", "Netherlands", "Italy", "Singapore", "Japan", "United States", "Mexico", "Brazil", "United Arab Emirates"],
+        "teams": {
+            "Alfa Romeo": {"team_country": "Switzerland", "drivers": ["Zhou Guanyu", "Valtteri Bottas"], "driver_countries": {"Zhou Guanyu": "China", "Valtteri Bottas": "Finland"}, "speed": "medium"},
+            "AlphaTauri": {"team_country": "Italy", "drivers": ["Pierre Gasly", "Yuki Tsunoda"], "driver_countries": {"Pierre Gasly": "France", "Yuki Tsunoda": "Japan"}, "speed": "slow"},
+            "Alpine": {"team_country": "France", "drivers": ["Fernando Alonso", "Esteban Ocon"], "driver_countries": {"Fernando Alonso": "Spain", "Esteban Ocon": "France"}, "speed": "fast"},
+            "Aston Martin": {"team_country": "United Kingdom", "drivers": ["Sebastian Vettel", "Lance Stroll"], "driver_countries": {"Sebastian Vettel": "Germany", "Lance Stroll": "Canada"}, "speed": "medium"},
+            "Ferrari": {"team_country": "Italy", "drivers": ["Charles Leclerc", "Carlos Sainz Jr."], "driver_countries": {"Charles Leclerc": "Monaco", "Carlos Sainz Jr.": "Spain"}, "speed": "very fast"},
+            "Haas": {"team_country": "United States", "drivers": ["Kevin Magnussen", "Mick Schumacher"], "driver_countries": {"Kevin Magnussen": "Denmark", "Mick Schumacher": "Germany"}, "speed": "slow"},
+            "McLaren": {"team_country": "United Kingdom", "drivers": ["Daniel Ricciardo", "Lando Norris"], "driver_countries": {"Daniel Ricciardo": "Australia", "Lando Norris": "United Kingdom"}, "speed": "fast"},
+            "Mercedes": {"team_country": "Germany", "drivers": ["Lewis Hamilton", "George Russell"], "driver_countries": {"Lewis Hamilton": "United Kingdom", "George Russell": "United Kingdom"}, "speed": "very fast"},
+            "Red Bull": {"team_country": "Austria", "drivers": ["Max Verstappen", "Sergio Perez"], "driver_countries": {"Max Verstappen": "Netherlands", "Sergio Perez": "Mexico"}, "speed": "very fast"},
+            "Williams": {"team_country": "United Kingdom", "drivers": ["Nicholas Latifi", "Alexander Albon"], "driver_countries": {"Nicholas Latifi": "Canada", "Alexander Albon": "Thailand"}, "speed": "slow"}
+        }
+    },
+    "2023": {
+        "countries": ["Bahrain", "Saudi Arabia", "Australia", "Azerbaijan", "Monaco", "Spain", "Canada", "Austria", "United Kingdom", "Hungary", "Belgium", "Netherlands", "Italy", "Singapore", "Japan", "Qatar", "United States", "Mexico", "Brazil", "United Arab Emirates"],
+        "teams": {
+            "Alfa Romeo": {"team_country": "Switzerland", "drivers": ["Zhou Guanyu", "Valtteri Bottas"], "driver_countries": {"Zhou Guanyu": "China", "Valtteri Bottas": "Finland"}, "speed": "slow"},
+            "AlphaTauri": {"team_country": "Italy", "drivers": ["Daniel Ricciardo", "Yuki Tsunoda"], "driver_countries": {"Daniel Ricciardo": "Australia", "Yuki Tsunoda": "Japan"}, "speed": "slow"},
+            "Alpine": {"team_country": "France", "drivers": ["Pierre Gasly", "Esteban Ocon"], "driver_countries": {"Pierre Gasly": "France", "Esteban Ocon": "France"}, "speed": "medium"},
+            "Aston Martin": {"team_country": "United Kingdom", "drivers": ["Fernando Alonso", "Lance Stroll"], "driver_countries": {"Fernando Alonso": "Spain", "Lance Stroll": "Canada"}, "speed": "fast"},
+            "Ferrari": {"team_country": "Italy", "drivers": ["Charles Leclerc", "Carlos Sainz Jr."], "driver_countries": {"Charles Leclerc": "Monaco", "Carlos Sainz Jr.": "Spain"}, "speed": "fast"},
+            "Haas": {"team_country": "United States", "drivers": ["Kevin Magnussen", "Nico Hulkenberg"], "driver_countries": {"Kevin Magnussen": "Denmark", "Nico Hulkenberg": "Germany"}, "speed": "slow"},
+            "McLaren": {"team_country": "United Kingdom", "drivers": ["Lando Norris", "Oscar Piastri"], "driver_countries": {"Lando Norris": "United Kingdom", "Oscar Piastri": "Australia"}, "speed": "fast"},
+            "Mercedes": {"team_country": "Germany", "drivers": ["Lewis Hamilton", "George Russell"], "driver_countries": {"Lewis Hamilton": "United Kingdom", "George Russell": "United Kingdom"}, "speed": "fast"},
+            "Red Bull": {"team_country": "Austria", "drivers": ["Max Verstappen", "Sergio Perez"], "driver_countries": {"Max Verstappen": "Netherlands", "Sergio Perez": "Mexico"}, "speed": "very fast"},
+            "Williams": {"team_country": "United Kingdom", "drivers": ["Logan Sargeant", "Alexander Albon"], "driver_countries": {"Logan Sargeant": "United States", "Alexander Albon": "Thailand"}, "speed": "slow"}
+        }
+    },
+    "2024": {
+        "countries": ["Bahrain", "Saudi Arabia", "Australia", "Japan", "China", "Monaco", "Canada", "Spain", "Austria", "United Kingdom", "Hungary", "Belgium", "Netherlands", "Italy", "Azerbaijan", "Singapore", "United States", "Mexico", "Brazil", "Qatar", "United Arab Emirates"],
+        "teams": {
+            "Alpine": {"team_country": "France", "drivers": ["Pierre Gasly", "Esteban Ocon"], "driver_countries": {"Pierre Gasly": "France", "Esteban Ocon": "France"}, "speed": "medium"},
+            "Aston Martin": {"team_country": "United Kingdom", "drivers": ["Fernando Alonso", "Lance Stroll"], "driver_countries": {"Fernando Alonso": "Spain", "Lance Stroll": "Canada"}, "speed": "medium"},
+            "Ferrari": {"team_country": "Italy", "drivers": ["Charles Leclerc", "Carlos Sainz Jr."], "driver_countries": {"Charles Leclerc": "Monaco", "Carlos Sainz Jr.": "Spain"}, "speed": "very fast"},
+            "Haas": {"team_country": "United States", "drivers": ["Kevin Magnussen", "Nico Hulkenberg"], "driver_countries": {"Kevin Magnussen": "Denmark", "Nico Hulkenberg": "Germany"}, "speed": "medium"},
+            "Kick Sauber": {"team_country": "Switzerland", "drivers": ["Zhou Guanyu", "Valtteri Bottas"], "driver_countries": {"Zhou Guanyu": "China", "Valtteri Bottas": "Finland"}, "speed": "slow"},
+            "McLaren": {"team_country": "United Kingdom", "drivers": ["Lando Norris", "Oscar Piastri"], "driver_countries": {"Lando Norris": "United Kingdom", "Oscar Piastri": "Australia"}, "speed": "very fast"},
+            "Mercedes": {"team_country": "Germany", "drivers": ["Lewis Hamilton", "George Russell"], "driver_countries": {"Lewis Hamilton": "United Kingdom", "George Russell": "United Kingdom"}, "speed": "very fast"},
+            "Racing Bulls": {"team_country": "Italy", "drivers": ["Daniel Ricciardo", "Yuki Tsunoda"], "driver_countries": {"Daniel Ricciardo": "Italy", "Yuki Tsunoda": "Japan"}, "speed": "medium"},
+            "Red Bull": {"team_country": "Austria", "drivers": ["Max Verstappen", "Sergio Perez"], "driver_countries": {"Max Verstappen": "Netherlands", "Sergio Perez": "Mexico"}, "speed": "very fast"},
+            "Williams": {"team_country": "United Kingdom", "drivers": ["Alexander Albon", "Franco Colapinto"], "driver_countries": {"Alexander Albon": "Thailand", "Franco Colapinto": "Argentina"}, "speed": "slow"}
+        }
+    },
+    "2025": {
+        "countries": ["Australia", "China", "Japan", "Bahrain", "Saudi Arabia", "Monaco", "Spain", "Canada", "Austria", "United Kingdom", "Belgium", "Hungary", "Netherlands", "Italy", "Azerbaijan", "Singapore", "United States", "Mexico", "Brazil", "Qatar", "United Arab Emirates"],
+        "teams": {
+            "Alpine": {"team_country": "France", "drivers": ["Pierre Gasly", "Franco Colapinto"], "driver_countries": {"Pierre Gasly": "France", "Franco Colapinto": "Argentina"}, "speed": "slow"},
+            "Aston Martin": {"team_country": "United Kingdom", "drivers": ["Fernando Alonso", "Lance Stroll"], "driver_countries": {"Fernando Alonso": "Spain", "Lance Stroll": "Canada"}, "speed": "medium"},
+            "Ferrari": {"team_country": "Italy", "drivers": ["Charles Leclerc", "Lewis Hamilton"], "driver_countries": {"Charles Leclerc": "Monaco", "Lewis Hamilton": "United Kingdom"}, "speed": "fast"},
+            "Haas": {"team_country": "United States", "drivers": ["Esteban Ocon", "Oliver Bearman"], "driver_countries": {"Esteban Ocon": "France", "Oliver Bearman": "United Kingdom"}, "speed": "slow"},
+            "Kick Sauber": {"team_country": "Switzerland", "drivers": ["Gabriel Bortoleto", "Nico Hulkenberg"], "driver_countries": {"Gabriel Bortoleto": "Brazil", "Nico Hulkenberg": "Germany"}, "speed": "slow"},
+            "McLaren": {"team_country": "United Kingdom", "drivers": ["Lando Norris", "Oscar Piastri"], "driver_countries": {"Lando Norris": "United Kingdom", "Oscar Piastri": "Australia"}, "speed": "very fast"},
+            "Mercedes": {"team_country": "Germany", "drivers": ["Kimi Antonelli", "George Russell"], "driver_countries": {"Kimi Antonelli": "Italy", "George Russell": "United Kingdom"}, "speed": "very fast"},
+            "Racing Bulls": {"team_country": "Italy", "drivers": ["Isack Hadjar", "Liam Lawson"], "driver_countries": {"Isack Hadjar": "France", "Liam Lawson": "New Zealand"}, "speed": "medium"},
+            "Red Bull": {"team_country": "Austria", "drivers": ["Max Verstappen", "Yuki Tsunoda"], "driver_countries": {"Max Verstappen": "Netherlands", "Yuki Tsunoda": "Japan"}, "speed": "very fast"},
+            "Williams": {"team_country": "United Kingdom", "drivers": ["Alexander Albon", "Carlos Sainz Jr."], "driver_countries": {"Alexander Albon": "Thailand", "Carlos Sainz Jr.": "Spain"}, "speed": "fast"}
+        }
+    },
+    "2026": {
+        "countries": ["Australia", "China", "Japan", "Canada", "Monaco", "Austria", "United Kingdom", "Belgium", "Hungary", "Netherlands", "Italy", "Spain", "Azerbaijan", "Malaysia", "Singapore", "United States", "Mexico", "Brazil", "Qatar", "United Arab Emirates"],
+        "teams": {
+            "Alpine": {"team_country": "France", "drivers": ["Pierre Gasly", "Franco Colapinto"], "driver_countries": {"Pierre Gasly": "France", "Franco Colapinto": "Argentina"}, "speed": "medium"},
+            "Aston Martin": {"team_country": "United Kingdom", "drivers": ["Fernando Alonso", "Lance Stroll"], "driver_countries": {"Fernando Alonso": "Spain", "Lance Stroll": "Canada"}, "speed": "slow"},
+            "Audi": {"team_country": "Germany", "drivers": ["Gabriel Bortoleto", "Nico Hulkenberg"], "driver_countries": {"Gabriel Bortoleto": "Brazil", "Nico Hulkenberg": "Germany"}, "speed": "slow"},
+            "Cadillac": {"team_country": "United States", "drivers": ["Sergio Perez", "Valtteri Bottas"], "driver_countries": {"Sergio Perez": "Mexico", "Valtteri Bottas": "Finland"}, "speed": "slow"},
+            "Ferrari": {"team_country": "Italy", "drivers": ["Charles Leclerc", "Lewis Hamilton"], "driver_countries": {"Charles Leclerc": "Monaco", "Lewis Hamilton": "United Kingdom"}, "speed": "fast"},
+            "Haas": {"team_country": "United States", "drivers": ["Esteban Ocon", "Oliver Bearman"], "driver_countries": {"Esteban Ocon": "France", "Oliver Bearman": "United Kingdom"}, "speed": "medium"},
+            "McLaren": {"team_country": "United Kingdom", "drivers": ["Lando Norris", "Oscar Piastri"], "driver_countries": {"Lando Norris": "United Kingdom", "Oscar Piastri": "Australia"}, "speed": "fast"},
+            "Mercedes": {"team_country": "Germany", "drivers": ["Kimi Antonelli", "George Russell"], "driver_countries": {"Kimi Antonelli": "Italy", "George Russell": "United Kingdom"}, "speed": "fast"},
+            "Racing Bulls": {"team_country": "Italy", "drivers": ["Liam Lawson", "Arvid Lindblad"], "driver_countries": {"Liam Lawson": "New Zealand", "Arvid Lindblad": "United Kingdom"}, "speed": "medium"},
+            "Red Bull": {"team_country": "Austria", "drivers": ["Max Verstappen", "Isack Hadjar"], "driver_countries": {"Max Verstappen": "Netherlands", "Isack Hadjar": "France"}, "speed": "medium"},
+            "Williams": {"team_country": "United Kingdom", "drivers": ["Alexander Albon", "Carlos Sainz Jr."], "driver_countries": {"Alexander Albon": "Thailand", "Carlos Sainz Jr.": "Spain"}, "speed": "slow"}
+        }
+    }
+}
+
+GRID_LIMIT = 6
+
+SPEED_WEIGHTS = {
+    "very fast": 40,
+    "fast": 30,
+    "medium": 20,
+    "slow": 10
+}
+
+active_grid = []
+chosen_teams = set()
+
+# Determine players and bots
+player_count = int(input(f"Enter number of human players (1-6): "))
+bot_count = GRID_LIMIT - player_count
+
+if player_count == 1:
+    print(f"Setting up game with {player_count} player and {bot_count} bots.\n")
+else:
+    print(f"Setting up game with {player_count} players and {bot_count} bots.\n")
+
+# Step 1: Choose Formula One season
+while True:
+    selected_season = input("Enter F1 Season (2009-2026): ")
+    if selected_season in f1_database:
+        break
+    print("Invalid season choice.")
+
+season_data = f1_database[selected_season]
+all_teams = season_data["teams"]
+
+# Step 2: Choose Grand Prix Country
+print("\nAvailable Grand Prix Countries", ", ".join(season_data["countries"]))
+while True:
+    gp_country = input("Enter the Country of the Grand Prix: ")
+    if gp_country in season_data["countries"]:
+        break
+    print("Invalid country. Please pick a country listed above.")
+
+# Step 3: Collect player selections
+for i in range(1, player_count + 1):
+    print(f"\nPlayer {i} Setup")
+
+    available_teams = [team for team in all_teams.keys() if team not in chosen_teams]
+    print("Available teams:", ", ".join(available_teams))
+
+    while True:
+        team = input(f"Player {i}, pick a team: ")
+        if team in available_teams:
+            break
+        print(f"Invalid choice. Please pick an available team from the list.")
+
+    chosen_teams.add(team)
+
+    drivers_list = all_teams[team]["drivers"]
+    print("Available drivers:", ", ".join(drivers_list))
+    driver = input(f"Player {i}, pick a driver: ")
+
+    active_grid.append({
+        "type": "Human",
+        "team": team,
+        "driver": driver
+    })
+
+# Speed values mapped to integers for strict tiebreaking comparison
+SPEED_TIERS = {"very fast": 4, "fast": 3, "medium": 2, "slow": 1}
+
+# Step 4: Automatically fill the remaining grid with prioritized bots
+for b in range(1, bot_count + 1):
+    remaining_teams = [team for team in all_teams.keys() if team not in chosen_teams]
+    candidate_drivers = []
+
+    # Evaluate every single available driver in the remaining field
+    for team in remaining_teams:
+        team_info = all_teams[team]
+
+        for driver in team_info["drivers"]:
+            # Rule checking
+            is_driver_home = (team_info["driver_countries"][driver] == gp_country)
+            is_team_home = (team_info["team_country"] == gp_country)
+
+            # Categorize into strict numerical priorities
+            if is_driver_home:
+                priority = 3 # Rule 1: Driver Home GP
+            elif is_team_home:
+                priority = 2 # Rule 2: Team Home GP
+            else:
+                priority = 1
+
+            candidate_drivers.append({
+                "driver": driver,
+                "team": team,
+                "priority": priority,
+                "speed_score": SPEED_TIERS[team_info["speed"]]
+            })
+
+    if not candidate_drivers:
+        break
+
+    # Find the maximum prioority level present in the remaining pool
+    max_priority = max(c["priority"] for c in candidate_drivers)
+
+    # Filter candidates to only include those in the highest available priority bracket
+    top_bracket = [c for c in candidate_drivers if c["priority"] == max_priority]
+
+    if max_priority > 1:
+        # Tiebreaker Active: Home Advantage Scenario
+        # Filter down further to highest speed rating within this home bracket
+        max_speed = max(c["speed_score"] for c in top_bracket)
+        final_pool = [c for c in top_bracket if c["speed_score"] == max_speed]
+
+        # If still tied, randomly choose one
+        selected_bot = random.choice(final_pool)
+
+    else:
+        # No Home Ties: Standard Scenario
+        teams_in_pool = list(set(c["team"] for c in top_bracket))
+        current_weights = [SPEED_WEIGHTS[all_teams[t]["speed"]] for t in teams_in_pool]
+
+        # Choose team by probability weight
+        chosen_bot_team = random.choices(teams_in_pool, weights=current_weights, k=1)[0]
+
+        # Pick a random driver from that team
+        drivers_on_team = [c for c in top_bracket if c["team"] == chosen_bot_team]
+        selected_bot = random.choice(drivers_on_team)
+
+    # Commit choices to grid
+    bot_team = selected_bot["team"]
+    bot_driver = selected_bot["driver"]
+
+    chosen_teams.add(bot_team)
+    active_grid.append({
+        "type": "Bot",
+        "team": bot_team,
+        "driver": bot_driver
+    })
+
+# Display final starting grid
+print("\nFormulaGP Grid")
+for position, car in enumerate(active_grid, 1):
+    print(f"P{position}: {car['driver']} ({car['team']}) - [{car['type']}]")
