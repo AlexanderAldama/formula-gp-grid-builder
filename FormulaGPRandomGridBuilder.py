@@ -1,1 +1,312 @@
+import random
 
+print("FormulaGP Grid Builder\n")
+
+# Historical Formula One data (seasons, teams, and drivers) with speed ratings
+f1_database = {
+    "2009": {
+        "McLaren": {"drivers": ["Lewis Hamilton", "Heikki Kovalainen"], "speed": "fast"},
+        "Ferrari": {"drivers": ["Felipe Massa", "Kimi Raikkonen"], "speed": "fast"},
+        "BMW Sauber": {"drivers": ["Robert Kubica", "Nick Heidfeld"], "speed": "medium"},
+        "Renault": {"drivers": ["Fernando Alonso", "Nelson Piquet Jr."], "speed": "medium"},
+        "Toyota": {"drivers": ["Jarno Trulli", "Timo Glock"], "speed": "fast"},
+        "Toro Rosso": {"drivers": ["Sebastien Bourdais", "Sebastien Buemi"], "speed": "slow"},
+        "Red Bull": {"drivers": ["Mark Webber", "Sebastian Vettel"], "speed": "very fast"},
+        "Williams": {"drivers": ["Nico Rosberg", "Kazuki Nakajima"], "speed": "medium"},
+        "Force India": {"drivers": ["Adrian Sutil", "Giancarlo Fisichella"], "speed": "slow"},
+        "Brawn": {"drivers": ["Jenson Button", "Rubens Barrichello"], "speed": "very fast"}
+    },
+    "2010": {
+        "McLaren": {"drivers": ["Jenson Button", "Lewis Hamilton"], "speed": "very fast"},
+        "Mercedes": {"drivers": ["Michael Schumacher", "Nico Rosberg"], "speed": "fast"},
+        "Red Bull": {"drivers": ["Sebastian Vettel", "Mark Webber"], "speed": "very fast"},
+        "Ferrari": {"drivers": ["Felipe Massa", "Fernando Alonso"], "speed": "fast"},
+        "Williams": {"drivers": ["Rubens Barrichello", "Nico Hulkenberg"], "speed": "medium"},
+        "Renault": {"drivers": ["Robert Kubica", "Vitaly Petrov"], "speed": "fast"},
+        "Force India": {"drivers": ["Adrian Sutil", "Vitantonio Liuzzi"], "speed": "medium"},
+        "Toro Rosso": {"drivers": ["Sebastien Buemi", "Jaime Alguersuari"], "speed": "slow"},
+        "Lotus": {"drivers": ["Jarno Trulli", "Heikki Kovalainen"], "speed": "slow"},
+        "HRT": {"drivers": ["Karun Chandhok", "Bruno Senna"], "speed": "slow"},
+        "BMW Sauber": {"drivers": ["Pedro de la Rosa", "Kamui Kobayashi"], "speed": "slow"},
+        "Virgin": {"drivers": ["Timo Glock", "Lucas di Grassi"], "speed": "slow"}
+    },
+    "2011": {
+        "Red Bull": {"drivers": ["Sebastian Vettel", "Mark Webber"], "speed": "very fast"},
+        "McLaren": {"drivers": ["Lewis Hamilton", "Jenson Button"], "speed": "very fast"},
+        "Ferrari": {"drivers": ["Fernando Alonso", "Felipe Massa"], "speed": "fast"},
+        "Mercedes": {"drivers": ["Michael Schumacher", "Nico Rosberg"], "speed": "fast"},
+        "Renault": {"drivers": ["Nick Heidfeld", "Vitaly Petrov"], "speed": "medium"},
+        "Williams": {"drivers": ["Rubens Barrichello", "Pastor Maldonado"], "speed": "slow"},
+        "Force India": {"drivers": ["Adrian Sutil", "Paul di Resta"], "speed": "medium"},
+        "Sauber": {"drivers": ["Kamui Kobayashi", "Sergio Perez"], "speed": "slow"},
+        "Toro Rosso": {"drivers": ["Sebastien Buemi", "Jaime Alguersuari"], "speed": "slow"},
+        "Lotus": {"drivers": ["Heikki Kovalainen", "Jarno Trulli"], "speed": "slow"},
+        "HRT": {"drivers": ["Daniel Ricciardo", "Vitantonio Liuzzi"], "speed": "slow"},
+        "Virgin": {"drivers": ["Timo Glock", "Jerome d'Ambrosio"], "speed": "slow"}
+    },
+    "2012": {
+        "Red Bull": {"drivers": ["Sebastian Vettel", "Mark Webber"], "speed": "very fast"},
+        "McLaren": {"drivers": ["Jenson Button", "Lewis Hamilton"], "speed": "fast"},
+        "Ferrari": {"drivers": ["Fernando Alonso", "Felipe Massa"], "speed": "very fast"},
+        "Mercedes": {"drivers": ["Michael Schumacher", "Nico Rosberg"], "speed": "medium"},
+        "Lotus": {"drivers": ["Kimi Raikkonen", "Romain Grosjean"], "speed": "fast"},
+        "Force India": {"drivers": ["Paul di Resta", "Nico Hulkenberg"], "speed": "medium"},
+        "Sauber": {"drivers": ["Kamui Kobayashi", "Sergio Perez"], "speed": "medium"},
+        "Toro Rosso": {"drivers": ["Daniel Ricciardo", "Jean-Eric Vergne"], "speed": "slow"},
+        "Williams": {"drivers": ["Pastor Maldonado", "Bruno Senna"], "speed": "medium"},
+        "Caterham": {"drivers": ["Heikki Kovalainen", "Vitaly Petrov"], "speed": "slow"},
+        "HRT": {"drivers": ["Pedro de la Rosa", "Narain Karthikeyan"], "speed": "slow"},
+        "Marussia": {"drivers": ["Timo Glock", "Charles Pic"], "speed": "slow"}
+    },
+    "2013": {
+        "Red Bull": {"drivers": ["Sebastian Vettel", "Mark Webber"], "speed": "very fast"},
+        "Ferrari": {"drivers": ["Fernando Alonso", "Felipe Massa"], "speed": "fast"},
+        "McLaren": {"drivers": ["Jenson Button", "Sergio Perez"], "speed": "medium"},
+        "Lotus": {"drivers": ["Kimi Raikkonen", "Romain Grosjean"], "speed": "fast"},
+        "Mercedes": {"drivers": ["Nico Rosberg", "Lewis Hamilton"], "speed": "fast"},
+        "Sauber": {"drivers": ["Nico Hulkenberg", "Esteban Gutierrez"], "speed": "medium"},
+        "Force India": {"drivers": ["Paul di Resta", "Adrian Sutil"], "speed": "medium"},
+        "Williams": {"drivers": ["Pastor Maldonado", "Valtteri Bottas"], "speed": "slow"},
+        "Toro Rosso": {"drivers": ["Jean-Eric Vergne", "Daniel Ricciardo"], "speed": "slow"},
+        "Caterham": {"drivers": ["Charles Pic", "Giedo van der Garde"], "speed": "slow"},
+        "Marussia": {"drivers": ["Jules Bianchi", "Max Chilton"], "speed": "slow"}
+    },
+    "2014": {
+        "Caterham": {"drivers": ["Marcus Ericsson", "Kamui Kobayashi"], "speed": "slow"},
+        "Ferrari": {"drivers": ["Kimi Raikkonen", "Fernando Alonso"], "speed": "fast"},
+        "Force India": {"drivers": ["Sergio Perez", "Nico Hulkenberg"], "speed": "fast"},
+        "Lotus": {"drivers": ["Romain Grosjean", "Pastor Maldonado"], "speed": "slow"},
+        "Marussia": {"drivers": ["Max Chilton", "Jules Bianchi"], "speed": "slow"},
+        "McLaren": {"drivers": ["Kevin Magnussen", "Jenson Button"], "speed": "fast"},
+        "Mercedes": {"drivers": ["Nico Rosberg", "Lewis Hamilton"], "speed": "very fast"},
+        "Red Bull": {"drivers": ["Sebastian Vettel", "Daniel Ricciardo"], "speed": "very fast"},
+        "Sauber": {"drivers": ["Esteban Gutierrez", "Adrian Sutil"], "speed": "slow"},
+        "Toro Rosso": {"drivers": ["Jean-Eric Vergne", "Daniil Kvyat"], "speed": "slow"},
+        "Williams": {"drivers": ["Felipe Massa", "Valtteri Bottas"], "speed": "fast"}
+    },
+    "2015": {
+        "Ferrari": {"drivers": ["Sebastian Vettel", "Kimi Raikkonen"], "speed": "very fast"},
+        "Force India": {"drivers": ["Sergio Perez", "Nico Hulkenberg"], "speed": "medium"},
+        "Lotus": {"drivers": ["Romain Grosjean", "Pastor Maldonado"], "speed": "medium"},
+        "Marussia": {"drivers": ["Will Stevens", "Roberto Merhi"], "speed": "slow"},
+        "McLaren": {"drivers": ["Fernando Alonso", "Jenson Button"], "speed": "slow"},
+        "Mercedes": {"drivers": ["Nico Rosberg", "Lewis Hamilton"], "speed": "very fast"},
+        "Red Bull": {"drivers": ["Daniel Ricciardo", "Daniil Kvyat"], "speed": "fast"},
+        "Sauber": {"drivers": ["Marcus Ericsson", "Felipe Nasr"], "speed": "slow"},
+        "Toro Rosso": {"drivers": ["Max Verstappen", "Carlos Sainz Jr."], "speed": "medium"},
+        "Williams": {"drivers": ["Felipe Massa", "Valtteri Bottas"], "speed": "fast"}
+    },
+    "2016": {
+        "Ferrari": {"drivers": ["Sebastian Vettel", "Kimi Raikkonen"], "speed": "very fast"},
+        "Force India": {"drivers": ["Sergio Perez", "Nico Hulkenberg"], "speed": "fast"},
+        "Haas": {"drivers": ["Romain Grosjean", "Esteban Gutierrez"], "speed": "slow"},
+        "Manor": {"drivers": ["Rio Haryanto", "Pascal Wehrlein"], "speed": "slow"},
+        "McLaren": {"drivers": ["Fernando Alonso", "Jenson Button"], "speed": "medium"},
+        "Mercedes": {"drivers": ["Nico Rosberg", "Lewis Hamilton"], "speed": "very fast"},
+        "Red Bull": {"drivers": ["Daniel Ricciardo", "Max Verstappen"], "speed": "very fast"},
+        "Renault": {"drivers": ["Kevin Magnussen", "Jolyon Palmer"], "speed": "slow"},
+        "Sauber": {"drivers": ["Marcus Ericsson", "Felipe Nasr"], "speed": "slow"},
+        "Toro Rosso": {"drivers": ["Daniil Kvyat", "Carlos Sainz Jr."], "speed": "medium"},
+        "Williams": {"drivers": ["Felipe Massa", "Valtteri Bottas"], "speed": "medium"}
+    },
+    "2017": {
+        "Ferrari": {"drivers": ["Sebastian Vettel", "Kimi Raikkonen"], "speed": "very fast"},
+        "Force India": {"drivers": ["Sergio Perez", "Esteban Ocon"], "speed": "fast"},
+        "Haas": {"drivers": ["Romain Grosjean", "Kevin Magnussen"], "speed": "slow"},
+        "McLaren": {"drivers": ["Stoffel Vandoorne", "Fernando Alonso"], "speed": "slow"},
+        "Mercedes": {"drivers": ["Lewis Hamilton", "Valtteri Bottas"], "speed": 'very fast'},
+        "Red Bull": {"drivers": ["Daniel Ricciardo", "Max Verstappen"], "speed": "fast"},
+        "Renault": {"drivers": ["Nico Hulkenberg", "Carlos Sainz Jr."], "speed": "medium"},
+        "Sauber": {"drivers": ["Marcus Ericsson", "Pascal Wehrlein"], "speed": "slow"},
+        "Toro Rosso": {"drivers": ["Pierre Gasly", "Brendon Hartley"], "speed": "slow"},
+        "Williams": {"drivers": ["Lance Stroll", "Felipe Massa"], "speed": "medium"}
+    },
+    "2018": {
+        "Ferrari": {"drivers": ["Sebastian Vettel", "Kimi Raikkonen"], "speed": "very fast"},
+        "Force India": {"drivers": ["Sergio Perez", "Esteban Ocon"], "speed": "medium"},
+        "Haas": {"drivers": ["Romain Grosjean", "Kevin Magnussen"], "speed": "medium"},
+        "McLaren": {"drivers": ["Stoffel Vandoorne", "Fernando Alonso"], "speed": "medium"},
+        "Mercedes": {"drivers": ["Lewis Hamilton", "Valtteri Bottas"], "speed": "very fast"},
+        "Red Bull": {"drivers": ["Daniel Ricciardo", "Max Verstappen"], "speed": "very fast"},
+        "Renault": {"drivers": ["Nico Hulkenberg", "Carlos Sainz Jr."], "speed": "medium"},
+        "Sauber": {"drivers": ["Marcus Ericsson", "Charles Leclerc"], "speed": "slow"},
+        "Toro Rosso": {"drivers": ["Pierre Gasly", "Brendon Hartley"], "speed": "slow"},
+        "Williams": {"drivers": ["Lance Stroll", "Sergey Sirotkin"], "speed": "slow"}
+    },
+    "2019": {
+        "Alfa Romeo": {"drivers": ["Kimi Raikkonen", "Antonio Giovinazzi"], "speed": "medium"},
+        "Ferrari": {"drivers": ["Sebastian Vettel", "Charles Leclerc"], "speed": "very fast"},
+        "Haas": {"drivers": ["Romain Grosjean", "Kevin Magnussen"], "speed": "slow"},
+        "McLaren": {"drivers": ["Lando Norris", "Carlos Sainz Jr."], "speed": "fast"},
+        "Mercedes": {"drivers": ["Lewis Hamilton", "Valtteri Bottas"], "speed": "very fast"},
+        "Racing Point": {"drivers": ["Sergio Perez", "Lance Stroll"], "speed": "medium"},
+        "Red Bull": {"drivers": ["Pierre Gasly", "Max Verstappen"], "speed": "very fast"},
+        "Renault": {"drivers": ["Daniel Ricciardo", "Nico Hulkenberg"], "speed": "medium"},
+        "Toro Rosso": {"drivers": ["Alexander Albon", "Daniil Kvyat"], "speed": "medium"},
+        "Williams": {"drivers": ["George Russesll", "Robert Kubica"], "speed": "slow"}
+    },
+    "2020": {
+        "Alfa Romeo": {"drivers": ["Kimi Raikkonen", "Antonio Giovinazzi"], "speed": "slow"},
+        "AlphaTauri": {"drivers": ["Pierre Gasly", "Daniil Kvyat"], "speed": "medium"},
+        "Ferrari": {"drivers": ["Sebastian Vettel", "Charles Leclerc"], "speed": "medium"},
+        "Haas": {"drivers": ["Romain Grosjean", "Kevin Magnussen"], "speed": "slow"},
+        "McLaren": {"drivers": ["Lando Norris", "Carlos Sainz Jr."], "speed": "fast"},
+        "Mercedes": {"drivers": ["Lewis Hamilton", "Valtteri Bottas"], "speed": "very fast"},
+        "Racing Point": {"drivers": ["Sergio Perez", "Lance Stroll"], "speed": "fast"},
+        "Red Bull": {"drivers": ["Alexander Albon", "Max Verstappen"], "speed": "fast"},
+        "Renault": {"drivers": ["Daniel Ricciardo", "Esteban Ocon"], "speed": "fast"},
+        "Williams": {"drivers": ["Nicholas Latifi", "George Russell"], "speed": "slow"}
+    },
+    "2021": {
+        "Alfa Romeo": {"drivers": ["Kimi Raikkonen", "Antonio Giovinazzi"], "speed": "slow"},
+        "AlphaTauri": {"drivers": ["Pierre Gasly", "Yuki Tsunoda"], "speed": "medium"},
+        "Alpine": {"drivers": ["Fernando Alonso", "Esteban Ocon"], "speed": "fast"},
+        "Aston Martin": {"drivers": ["Sebastian Vettel", "Lance Stroll"], "speed": "medium"},
+        "Ferrari": {"drivers": ["Charles Leclerc", "Carlos Sainz Jr."], "speed": "fast"},
+        "Haas": {"drivers": ["Nikita Mazepin", "Mick Schumacher"], "speed": "slow"},
+        "McLaren": {"drivers": ["Daniel Ricciardo", "Lando Norris"], "speed": "fast"},
+        "Mercedes": {"drivers": ["Lewis Hamilton", "Valtteri Bottas"], "speed": "very fast"},
+        "Red Bull": {"drivers": ["Sergio Perez", "Max Verstappen"], "speed": "very fast"},
+        "Williams": {"drivers": ["Nicholas Latifi", "George Russell"], "speed": "slow"}
+    },
+    "2022": {
+        "Alfa Romeo": {"drivers": ["Zhou Guanyu", "Valtteri Bottas"], "speed": "medium"},
+        "AlphaTauri": {"drivers": ["Pierre Gasly", "Yuki Tsunoda"], "speed": "slow"},
+        "Alpine": {"drivers": ["Fernando Alonso", "Esteban Ocon"], "speed": "fast"},
+        "Aston Martin": {"drivers": ["Sebastian Vettel", "Lance Stroll"], "speed": "medium"},
+        "Ferrari": {"drivers": ["Charles Leclerc", "Carlos Sainz Jr."], "speed": "very fast"},
+        "Haas": {"drivers": ["Kevin Magnussen", "Mick Schumacher"], "speed": "slow"},
+        "McLaren": {"drivers": ["Daniel Ricciardo", "Lando Norris"], "speed": "fast"},
+        "Mercedes": {"drivers": ["Lewis Hamilton", "George Russell"], "speed": "very fast"},
+        "Red Bull": {"drivers": ["Max Verstappen", "Sergio Perez"], "speed": "very fast"},
+        "Williams": {"drivers": ["Nicholas Latifi", "Alexander Albon"], "speed": "slow"}
+    },
+    "2023": {
+        "Alfa Romeo": {"drivers": ["Zhou Guanyu", "Valtteri Bottas"], "speed": "slow"},
+        "AlphaTauri": {"drivers": ["Daniel Ricciardo", "Yuki Tsunoda"], "speed": "slow"},
+        "Alpine": {"drivers": ["Pierre Gasly", "Esteban Ocon"], "speed": "medium"},
+        "Aston Martin": {"drivers": ["Fernando Alonso", "Lance Stroll"], "speed": "fast"},
+        "Ferrari": {"drivers": ["Charles Leclerc", "Carlos Sainz Jr."], "speed": "fast"},
+        "Haas": {"drivers": ["Kevin Magnussen", "Nico Hulkenberg"], "speed": "slow"},
+        "McLaren": {"drivers": ["Lando Norris", "Oscar Piastri"], "speed": "fast"},
+        "Mercedes": {"drivers": ["Lewis Hamilton", "George Russell"], "speed": "fast"},
+        "Red Bull": {"drivers": ["Max Verstappen", "Sergio Perez"], "speed": "very fast"},
+        "Williams": {"drivers": ["Logan Sargeant", "Alexander Albon"], "speed": "slow"}
+    },
+    "2024": {
+        "Alpine": {"drivers": ["Pierre Gasly", "Esteban Ocon"], "speed": "medium"},
+        "Aston Martin": {"drivers": ["Fernando Alonso", "Lance Stroll"], "speed": "medium"},
+        "Ferrari": {"drivers": ["Charles Leclerc", "Carlos Sainz Jr."], "speed": "very fast"},
+        "Haas": {"drivers": ["Kevin Magnussen", "Nico Hulkenberg"], "speed": "medium"},
+        "Kick Sauber": {"drivers": ["Zhou Guanyu", "Valtteri Bottas"], "speed": "slow"},
+        "McLaren": {"drivers": ["Lando Norris", "Oscar Piastri"], "speed": "very fast"},
+        "Mercedes": {"drivers": ["Lewis Hamilton", "George Russell"], "speed": "very fast"},
+        "Racing Bulls": {"drivers": ["Daniel Ricciardo", "Yuki Tsunoda"], "speed": "medium"},
+        "Red Bull": {"drivers": ["Max Verstappen", "Sergio Perez"], "speed": "very fast"},
+        "Williams": {"drivers": ["Alexander Albon", "Franco Colapinto"], "speed": "slow"}
+    },
+    "2025": {
+        "Alpine": {"drivers": ["Pierre Gasly", "Franco Colapinto"], "speed": "slow"},
+        "Aston Martin": {"drivers": ["Fernando Alonso", "Lance Stroll"], "speed": "medium"},
+        "Ferrari": {"drivers": ["Charles Leclerc", "Lewis Hamilton"], "speed": "fast"},
+        "Haas": {"drivers": ["Esteban Ocon", "Oliver Bearman"], "speed": "slow"},
+        "Kick Sauber": {"drivers": ["Gabriel Bortoleto", "Nico Hulkenberg"], "speed": "slow"},
+        "McLaren": {"drivers": ["Lando Norris", "Oscar Piastri"], "speed": "very fast"},
+        "Mercedes": {"drivers": ["Kimi Antonelli", "George Russell"], "speed": "very fast"},
+        "Racing Bulls": {"drivers": ["Isack Hadjar", "Liam Lawson"], "speed": "medium"},
+        "Red Bull": {"drivers": ["Max Verstappen", "Yuki Tsunoda"], "speed": "very fast"},
+        "Williams": {"drivers": ["Alexander Albon", "Carlos Sainz Jr."], "speed": "fast"}
+    },
+    "2026": {
+        "Alpine": {"drivers": ["Pierre Gasly", "Franco Colapinto"], "speed": "medium"},
+        "Aston Martin": {"drivers": ["Fernando Alonso", "Lance Stroll"], "speed": "slow"},
+        "Audi": {"drivers": ["Gabriel Bortoleto", "Nico Hulkenberg"], "speed": "slow"},
+        "Cadillac": {"drivers": ["Sergio Perez", "Valtteri Bottas"], "speed": "slow"},
+        "Ferrari": {"drivers": ["Charles Leclerc", "Lewis Hamilton"], "speed": "fast"},
+        "Haas": {"drivers": ["Esteban Ocon", "Oliver Bearman"], "speed": "medium"},
+        "McLaren": {"drivers": ["Lando Norris", "Oscar Piastri"], "speed": "fast"},
+        "Mercedes": {"drivers": ["Kimi Antonelli", "George Russell"], "speed": "fast"},
+        "Racing Bulls": {"drivers": ["Liam Lawson", "Arvid Lindblad"], "speed": "medium"},
+        "Red Bull": {"drivers": ["Max Verstappen", "Isack Hadjar"], "speed": "medium"},
+        "Williams": {"drivers": ["Alexander Albon", "Carlos Sainz Jr."], "speed": "slow"}
+    }
+}
+
+# Map classifications to numerical selection probabilities (weights)
+SPEED_WEIGHTS = {
+    "very fast": 40,
+    "fast": 30,
+    "medium": 20,
+    "slow": 10
+}
+
+GRID_LIMIT = 6
+active_grid = []
+chosen_teams = set() # Tracks teams already taken
+
+# Determine players and bots
+player_count = int(input(f"Enter number of human players (1-{GRID_LIMIT}): "))
+bot_count = GRID_LIMIT - player_count
+
+if player_count == 1:
+    print(f"Setting up game with {player_count} player and {bot_count} bots.\n")
+else:
+    print(f"Setting up game with {player_count} players and {bot_count} bots.\n")
+
+# Choose Formula One season
+selected_season = input("Enter F1 Season (2009-2026): ")
+all_teams = f1_database[selected_season]
+
+# Collect player selections
+for i in range(1, player_count + 1):
+    print(f"\nPlayer {i} Setup")
+
+    # Filter out teams that have already been chosen
+    available_teams = [team for team in all_teams.keys() if team not in chosen_teams]
+    print("Available teams:", ", ".join(available_teams))
+
+    # Loop until the player inputs a valid, unchosen team
+    while True:
+        team = input(f"Player {i}, pick a team: ")
+        if team in available_teams:
+            break
+        print(f"Invalid choice. Please pick an available team from the list.")
+
+    # Track the chosen team so it cannot be chosen again
+    chosen_teams.add(team)
+
+    drivers_list = all_teams[team]["drivers"]
+    print("Available drivers:", ", ".join(drivers_list))
+    driver = input(f"Player {i}, pick a driver: ")
+
+    active_grid.append({
+        "type": "Human",
+        "team": team,
+        "driver": driver
+    })
+
+# Automatically fill the remaining grid with weighted bots
+for b in range (1, bot_count + 1):
+    # Dynamically filter available teams for this specific bot pick
+    remaining_teams = [team for team in all_teams.keys() if team not in chosen_teams]
+
+    # Generate matching weights based on the speed classification
+    current_weights = [SPEED_WEIGHTS[all_teams[team]["speed"]] for team in remaining_teams]
+
+    # Weighted random selection of exactly one team
+    bot_team = random.choices(remaining_teams, weights=current_weights, k=1)[0]
+    chosen_teams.add(bot_team)
+
+    # Pick a random driver from that team
+    bot_driver = random.choice(all_teams[bot_team]["drivers"])
+
+    active_grid.append({
+        "type": "Bot",
+        "team": bot_team,
+        "driver": bot_driver
+    })
+
+# Display final starting grid
+print("\nFormulaGP Grid")
+for position, car in enumerate(active_grid, 1):
+    print(f"P{position}: {car['driver']} ({car['team']}) - [{car['type']}]")
